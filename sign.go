@@ -13,7 +13,7 @@ type Tool struct {
 	AuthSecretKey string
 }
 
-func (tool Tool) getLoginSignature(params map[string]any, nonce string, timestamp int64) string {
+func (tool Tool) GetLoginSignature(params map[string]any, nonce string, timestamp int64) string {
 	paramsStr := tool.getParamsString(params)
 	mac := hmac.New(sha256.New, []byte(tool.AuthSecretKey+nonce))
 	mac.Write([]byte(strconv.Itoa(int(timestamp)) + paramsStr))
@@ -22,7 +22,7 @@ func (tool Tool) getLoginSignature(params map[string]any, nonce string, timestam
 	return strings.ToUpper(signature)
 }
 
-func (tool Tool) getS2SSignature(params map[string]any, timestamp int64) string {
+func (tool Tool) GetS2SSignature(params map[string]any, timestamp int64) string {
 	paramsStr := tool.getParamsString(params)
 	mac := hmac.New(sha256.New, []byte(tool.AuthSecretKey))
 	mac.Write([]byte(strconv.Itoa(int(timestamp)) + "\n" + paramsStr))
